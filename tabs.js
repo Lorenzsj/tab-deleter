@@ -50,7 +50,7 @@ document.addEventListener("click", (e) => {
 });
 
 function massDelete() {
-  var blacklist = ["4chan.org", "twitch.tv"]; // load this from file or somethhing
+  var blacklist = ["google.com", "bing.com", "yahoo.com"]; // load this from file or somethhing
 
   /* get all tabs that are in the current window of firefox */
   browser.tabs.query({
@@ -66,7 +66,7 @@ function massDelete() {
       });
     }
   });
-}  
+}
 
 //onRemoved listener. fired when tab is removed
 browser.tabs.onRemoved.addListener((tabId, removeInfo) => {

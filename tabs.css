@@ -7,11 +7,11 @@ a {
   display: inline-block;
 }
 
-.switch-tabs {
+.debug-tabs {
   padding-left: 10px;
 }
 
-.switch-tabs a {
+.debug-tabs a {
   display: block;
 }
 
