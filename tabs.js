@@ -17,7 +17,7 @@ function listTabs() {
         let tabLink = document.createElement('a');
 
         tabLink.textContent = tab.title || tab.id;
-        tabLink.classList.add('switch-tabs');
+        tabLink.classList.add('debug-tabs');
         currentTabs.appendChild(tabLink);
       }
 
@@ -48,30 +48,57 @@ document.addEventListener("click", (e) => {
   }
 
   e.preventDefault();
-});
+}, false);
+
+function getBlacklist() {
+  // get list from plugin field
+  var field = document.getElementById("blacklist-input").value;
+  if (field) {
+    var blacklist = [];
+    // separate on commas
+    var list = field.split(',');
+
+    // pattern for url validity
+    var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+    var regex = new RegExp(expression);
+
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].match(regex)) {
+        blacklist.push(list[i].trim()); // remove trailing whitspace
+      }
+    }
+
+    return blacklist;
+  }
+  else {
+    return false;
+  }
+}
 
 function massDelete() {
-  var blacklist = ["google.com", "bing.com", "yahoo.com"]; // load this from a form, json file, or somethhing */
-
-  // get all tabs that are in the current window of firefox
-  browser.tabs.query({
-    currentWindow: true
-  }).then((tabs) => {
-    // go through all tabs
-    for (var tab of tabs) {
-      // check if the current tab has a substring from the blacklist array
-      // some will short-circuit the loop if a match is found
-      blacklist.some(function(site) {
-        if (tab.url.indexOf(site) !== -1) {
-          browser.tabs.remove(tab.id); // kill the tab if it does
-          return true;
-        }
-        else {
-          console.log(tab.url + " does not contain " + site);
-        }
-      });
-    }
-  });
+  var blacklist = getBlacklist();
+  
+  if (blacklist) {
+    // get all tabs that are in the current window of firefox
+    browser.tabs.query({
+      currentWindow: true
+    }).then((tabs) => {
+      // go through all tabs
+      for (var tab of tabs) {
+        // check if the current tab has a substring from the blacklist array
+        // some will short-circuit the loop if a match is found
+        blacklist.some(function(site) {
+          if (tab.url.indexOf(site) !== -1) {
+            browser.tabs.remove(tab.id); // kill the tab if it does
+            return true;
+          }
+          else {
+            console.log(tab.url + " does not contain " + site);
+          }
+        });
+      }
+    });
+  }
 }
 
 // onRemoved listener. fired when tab is removed

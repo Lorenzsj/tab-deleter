@@ -1,5 +1,8 @@
 {
   "applications": {
+    "gecko": {
+      "strict_min_version": "57.0"
+    }
   },
   "background": {
       "scripts": ["background.js"]
@@ -10,7 +13,7 @@
     "default_popup": "tabs.html"
   },
   "description": "Deletes tabs based on a simple blacklist.",
-  "homepage_url": "",
+  "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/tabs-tabs-tabs",
   "manifest_version": 2,
   "name": "Tab Deleter",
   "permissions": [
