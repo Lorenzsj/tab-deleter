@@ -28,8 +28,8 @@ function listTabs() {
   });
 }
 
-// this will load the tab list everytime the plugin is opened */
-document.addEventListener("DOMContentLoaded", listTabs);
+// below will load listTabs() everytime the plugin is opened
+// document.addEventListener("DOMContentLoaded", listTabs);
 
 // handle click events in plugin box
 document.addEventListener("click", (e) => {
@@ -50,6 +50,9 @@ document.addEventListener("click", (e) => {
   e.preventDefault();
 }, false);
 
+// todo: produce a better token for the substring match in mass delete
+// todo: make this function cleaner and better
+// note: there is a problem with adding www. to links
 function getBlacklist() {
   // get list from plugin field
   var field = document.getElementById("blacklist-input").value;
@@ -60,6 +63,7 @@ function getBlacklist() {
     var list = field.split(',');
 
     // pattern for url validity
+    // todo: make pattern better
     var expression = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
     var regex = new RegExp(expression);
 
@@ -87,10 +91,10 @@ function massDelete() {
       // go through all tabs
       for (var tab of tabs) {
         // check if the current tab has a substring from the blacklist array
-        // some will short-circuit the loop if a match is found
+        // the some loop will short-circuit if a match is found
         blacklist.some(function(site) {
           if (tab.url.indexOf(site) !== -1) {
-            browser.tabs.remove(tab.id); // kill the tab if it does
+            browser.tabs.remove(tab.id); // kill the tab if the substring is found
             return true;
           }
           else {
