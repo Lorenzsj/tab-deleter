@@ -53,8 +53,9 @@ document.addEventListener("click", (e) => {
 function getBlacklist() {
   // get list from plugin field
   var field = document.getElementById("blacklist-input").value;
+  var blacklist = [];
+
   if (field) {
-    var blacklist = [];
     // separate on commas
     var list = field.split(',');
 
@@ -71,7 +72,7 @@ function getBlacklist() {
     return blacklist;
   }
   else {
-    return false;
+    return blacklist;
   }
 }
 
